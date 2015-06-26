@@ -28,7 +28,7 @@ milxQtSpinePlugin::milxQtSpinePlugin(QObject *theParent) : milxQtPluginInterface
     dockable = false;
     consoleWindow = false;
     extension = true;
-    pluginName = "Diffusion Imaging";
+    pluginName = "Spine";
     dataName = "";
 
     //~ createConnections();
