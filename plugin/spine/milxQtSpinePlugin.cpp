@@ -17,6 +17,10 @@
 =========================================================================*/
 #include "milxQtSpinePlugin.h"
 
+//SMILI
+#include <milxQtFile.h>
+
+
 #include <qplugin.h>
 
 milxQtSpinePlugin::milxQtSpinePlugin(QObject *theParent) : milxQtPluginInterface(theParent)
@@ -31,7 +35,7 @@ milxQtSpinePlugin::milxQtSpinePlugin(QObject *theParent) : milxQtPluginInterface
     pluginName = "Spine";
     dataName = "";
 
-    //~ createConnections();
+    //createConnections();
 }
 
 milxQtSpinePlugin::~milxQtSpinePlugin()
@@ -48,14 +52,16 @@ QString milxQtSpinePlugin::name()
 
 QString milxQtSpinePlugin::openFileSupport()
 {
-    QString openPythonExt = "";
+    QString openSpineExt = "NII Images (*.nii *.nii.gz)";
 
-    return openPythonExt;
+    return openSpineExt;
 }
 
 QStringList milxQtSpinePlugin::openExtensions()
 {
     QStringList exts;
+    exts.append(".nii.gz");
+    exts.append(".nii");
 
     return exts;
 }
@@ -81,6 +87,29 @@ void milxQtSpinePlugin::SetInputCollection(vtkPolyDataCollection* collection, QS
 
 void milxQtSpinePlugin::open(QString filename)
 {
+    if(filename.contains(".nii", Qt::CaseInsensitive))
+    {
+        cout << "Loading as Spine Image" << endl;
+        milxQtFile imageFile;
+        if(imageFile.openImage(filename,spineImage))
+        {
+          spineImage->generateImage();
+          spineImage->disableInterpolateDisplay();
+
+          QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtModel*)), MainWindow, SLOT(display(milxQtModel*)));
+          QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtRenderWindow*)), MainWindow, SLOT(display(milxQtRenderWindow*)));
+
+          MainWindow->predisplay(spineImage);
+        }
+    }
+    else
+    {
+        cout << "File extension not supported." << endl;
+        return;
+    }
+
+    dataName = filename;
+    cout << "Loaded Spine Image File." << endl;
 
 }
 
@@ -172,4 +201,4 @@ void milxQtSpinePlugin::loadExtension()
     //~ //QObject::connect(denoiseAct, SIGNAL(triggered(bool)), denoiseModel, SLOT(denoise()));
 //~ }
 
-Q_EXPORT_PLUGIN2(DTIPlugin, milxQtSpinePluginFactory);
+Q_EXPORT_PLUGIN2(SpinePlugin, milxQtSpinePluginFactory);

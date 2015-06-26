@@ -64,7 +64,7 @@ public:
         \brief Does the plugin support opening files? [Implement this in your plugin]
     */
     inline virtual bool hasOpenSupport()
-    { return false; }
+    { return true; }
     /**
         \fn milxQtSpinePlugin::openFileSupport()
         \brief Get the file support string for opening (extension wildcard list). [Implement this in your plugin]
