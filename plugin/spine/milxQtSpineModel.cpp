@@ -62,7 +62,7 @@ void milxQtSpineModel::contextMenuEvent(QContextMenuEvent *currentEvent)
 {
     contextMenu = milxQtModel::basicContextMenu(); //!< Only exists for the duration of the context selection
 
-    contextMenu->addSeparator()->setText(tr("DiffusionTensor"));
+    contextMenu->addSeparator()->setText(tr("Spine"));
 //    contextMenu->addAction(colourDirectionAct);
   //  contextMenu->addAction(harmonicsAct);
     contextMenu->addSeparator()->setText(tr("Extensions"));
