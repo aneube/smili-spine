@@ -61,7 +61,7 @@ void milxQtSpineImage::contextMenuEvent(QContextMenuEvent *currentEvent)
 {
     contextMenu = milxQtImage::basicContextMenu(); //!< Only exists for the duration of the context selection
 
-    contextMenu->addSeparator()->setText(tr("Diffusion Tensor"));
+    contextMenu->addSeparator()->setText(tr("Spine"));
 //contextMenu->addAction(diffusionAct);
     //contextMenu->addAction(diffusion2Act);
     contextMenu->addSeparator()->setText(tr("Extensions"));
