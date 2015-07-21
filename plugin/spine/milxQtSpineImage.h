@@ -29,6 +29,14 @@ public:
     milxQtSpineImage(QWidget *theParent = 0);
     virtual ~milxQtSpineImage();
 
+	/*!
+	\fn milxQtSpineImage::enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3)
+	\brief Enable spline widget.
+
+	Quiet Boolean is to prevent possible popups to ask user parameters.
+	*/
+	virtual void enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3);
+
 public slots:
 //void diffusionGlyphs(size_t subsampleFactor = 0, size_t resolution = 16);
   //  void diffusionGlyphs2(size_t subsampleFactor = 0, size_t resolution = 16);

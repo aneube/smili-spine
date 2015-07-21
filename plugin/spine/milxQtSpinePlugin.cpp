@@ -100,6 +100,9 @@ void milxQtSpinePlugin::open(QString filename)
           QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtRenderWindow*)), MainWindow, SLOT(display(milxQtRenderWindow*)));
 
           MainWindow->predisplay(spineImage);
+		  spineImage->enableSpline();
+
+
         }
     }
     else

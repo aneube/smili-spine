@@ -36,6 +36,7 @@
 #include <vtkScalarBarActor.h>
 //Widgets
 #include <vtkScalarBarWidget.h>
+#include <vtkSplineWidget2.h>
 #include <vtkContourWidget.h>
 #include <vtkDistanceWidget.h>
 #include <vtkAngleWidget.h>
@@ -850,6 +851,7 @@ protected:
     vtkSmartPointer<vtkPointPicker> dataPicker; //!< For determining coordinates and points from the window
 
     //Widgets
+	vtkSmartPointer<vtkSplineWidget2> spline; //!< Scalar Bar Widget for the display
     vtkSmartPointer<vtkContourWidget> contourWidget; //!< contour interaction
     vtkSmartPointer<vtkDistanceWidget> distanceWidget; //!< Used for measuring distances
     vtkSmartPointer<vtkAngleWidget> angleWidget; //!< Used for measuring angles

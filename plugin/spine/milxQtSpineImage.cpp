@@ -70,11 +70,34 @@ void milxQtSpineImage::contextMenuEvent(QContextMenuEvent *currentEvent)
         contextMenu->addAction(currAct);
     }
     contextMenu->addSeparator();
-    ///Dont display extensions
+    ///Don't display extensions
     contextMenu->addMenu(milxQtRenderWindow::contourMenu);
     contextMenu->addMenu(milxQtRenderWindow::windowPropertiesMenu);
     contextMenu->addAction(milxQtRenderWindow::refreshAct);
     contextMenu->addAction(milxQtRenderWindow::resetAct);
 
     contextMenu->exec(currentEvent->globalPos());
+}
+
+void milxQtSpineImage::enableSpline(QString title, const bool quiet, double minRange, double maxRange, int noOfHandles)
+{
+	if (!milxQtRenderWindow::spline)
+		milxQtRenderWindow::spline = vtkSmartPointer<vtkSplineWidget2>::New();
+
+	bool ok1 = false;
+
+    noOfHandles = QInputDialog::getInt(this, tr("How many handles to show"),
+                                        tr("Labels:"), noOfHandles, 0, 99, 1, &ok1);
+ 
+    if(!ok1)
+        return;
+
+
+    //Add scale to scale widget
+    milxQtRenderWindow::spline->SetInteractor(QVTKWidget::GetInteractor());
+    //milxQtRenderWindow::scalarBar->SetScalarBarActor(milxQtRenderWindow::scale);
+    milxQtRenderWindow::spline->EnabledOn();
+
+    //milxQtRenderWindow::scaleBefore = true;
+    //milxQtRenderWindow::scaleAct->setChecked(true);
 }
