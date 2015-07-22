@@ -22,7 +22,7 @@
 #include <vtkFloatArray.h>
 #include <vtkPolyDataNormals.h>
 #include <vtkAppendPolyData.h>
-
+#include <vtkSplineRepresentation.h>
 
 milxQtSpineImage::milxQtSpineImage(QWidget *theParent) : milxQtImage(theParent)
 {
@@ -40,37 +40,46 @@ milxQtSpineImage::~milxQtSpineImage()
 
 void milxQtSpineImage::createActions()
 {
-/*diffusionAct = new QAction(this);
-        diffusionAct->setText(QApplication::translate("Model", "Diffusion Glyphs for Slice", 0, QApplication::UnicodeUTF8));
-        diffusionAct->setShortcut(tr("Shift+Alt+d"));
-    diffusion2Act = new QAction(this);
-        diffusion2Act->setText(QApplication::translate("Model", "Diffusion Glyphs for Slice Brute Force", 0, QApplication::UnicodeUTF8));
-        diffusion2Act->setShortcut(tr("Ctrl+Shift+d"));
-*/}
+  spineMenu = new QMenu(this); //!< Only exists for the duration of the context selection
+  spineMenu->setTitle(QApplication::translate("MainWindow", "Spine plugin extensions", 0, QApplication::UnicodeUTF8));
+
+  splineAct = new QAction(this);
+      splineAct->setText(QApplication::translate("Spine", "&Manual initialisation", 0, QApplication::UnicodeUTF8));
+      //splineAct->setShortcut(tr("Alt+l"));
+      splineAct->setCheckable(true);
+      splineAct->setChecked(false);
+  spineMenu->addAction(splineAct);
+
+  openSplineAct = new QAction(this);
+      openSplineAct->setText(QApplication::translate("Spine", "&Open initialisation", 0, QApplication::UnicodeUTF8));
+      openSplineAct->setCheckable(false);
+  spineMenu->addAction(openSplineAct);
+
+  saveSplineAct = new QAction(this);
+      saveSplineAct->setText(QApplication::translate("Spine", "&Save initialisation", 0, QApplication::UnicodeUTF8));
+      saveSplineAct->setCheckable(false);
+      saveSplineAct->setEnabled(false);
+  spineMenu->addAction(saveSplineAct);
+
+      menusToAdd.append(spineMenu);
+}
 
 void milxQtSpineImage::createConnections()
 {
-    //Operations
-//connect(diffusionAct, SIGNAL(triggered()), this, SLOT(diffusionGlyphs()));
-  //  connect(diffusion2Act, SIGNAL(triggered()), this, SLOT(diffusionGlyphs2()));
+  //Operations
+  connect(splineAct, SIGNAL(triggered()), this, SLOT(enableSpline()));
 
-    //milxQtImage::createConnections();
+
+  //milxQtImage::createConnections();
 }
 
 void milxQtSpineImage::contextMenuEvent(QContextMenuEvent *currentEvent)
 {
     contextMenu = milxQtImage::basicContextMenu(); //!< Only exists for the duration of the context selection
 
-    contextMenu->addSeparator()->setText(tr("Spine"));
-//contextMenu->addAction(diffusionAct);
-    //contextMenu->addAction(diffusion2Act);
-    contextMenu->addSeparator()->setText(tr("Extensions"));
-    foreach(QAction *currAct, extActionsToAdd)
-    {
-        contextMenu->addAction(currAct);
-    }
     contextMenu->addSeparator();
-    ///Don't display extensions
+    contextMenu->addMenu(spineMenu);
+    contextMenu->addSeparator();
     contextMenu->addMenu(milxQtRenderWindow::contourMenu);
     contextMenu->addMenu(milxQtRenderWindow::windowPropertiesMenu);
     contextMenu->addAction(milxQtRenderWindow::refreshAct);
@@ -82,7 +91,19 @@ void milxQtSpineImage::contextMenuEvent(QContextMenuEvent *currentEvent)
 void milxQtSpineImage::enableSpline(QString title, const bool quiet, double minRange, double maxRange, int noOfHandles)
 {
 	if (!milxQtRenderWindow::spline)
+	{
 		milxQtRenderWindow::spline = vtkSmartPointer<vtkSplineWidget2>::New();
+		milxQtRenderWindow::spline->EnabledOff();
+	}
+
+	// Check if visualised already, if so - disable
+	if(milxQtRenderWindow::spline->GetEnabled())
+	{
+	  milxQtRenderWindow::spline->EnabledOff();
+    splineAct->setChecked(false);
+    saveSplineAct->setEnabled(false);
+    return;
+	}
 
 	bool ok1 = false;
 
@@ -92,12 +113,35 @@ void milxQtSpineImage::enableSpline(QString title, const bool quiet, double minR
     if(!ok1)
         return;
 
+    vtkSmartPointer<vtkSplineRepresentation> rep1 = vtkSmartPointer<vtkSplineRepresentation>::New();
+    rep1->SetNumberOfHandles(3);
+    double position[3];
+
+    position[0] = -6;
+    position[1] = -58;
+    position[2] = -80;
+    rep1->SetHandlePosition(0, position);
+
+    position[0] = -6;
+    position[1] = -40;
+    position[2] = 20;
+
+    rep1->SetHandlePosition(1, position);
+
+    position[0] = -6;
+    position[1] = -65;
+    position[2] = 125;
+    rep1->SetHandlePosition(2, position);
+
+    //rep1->ProjectToPlaneOn();
+
+    milxQtRenderWindow::spline->SetRepresentation(rep1);
+
 
     //Add scale to scale widget
     milxQtRenderWindow::spline->SetInteractor(QVTKWidget::GetInteractor());
-    //milxQtRenderWindow::scalarBar->SetScalarBarActor(milxQtRenderWindow::scale);
     milxQtRenderWindow::spline->EnabledOn();
 
-    //milxQtRenderWindow::scaleBefore = true;
-    //milxQtRenderWindow::scaleAct->setChecked(true);
+    splineAct->setChecked(true);
+    saveSplineAct->setEnabled(true);
 }

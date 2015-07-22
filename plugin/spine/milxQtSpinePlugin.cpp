@@ -96,13 +96,11 @@ void milxQtSpinePlugin::open(QString filename)
           spineImage->generateImage();
           spineImage->disableInterpolateDisplay();
 
-          QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtModel*)), MainWindow, SLOT(display(milxQtModel*)));
-          QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtRenderWindow*)), MainWindow, SLOT(display(milxQtRenderWindow*)));
+          //QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtModel*)), MainWindow, SLOT(display(milxQtModel*)));
+          //QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtRenderWindow*)), MainWindow, SLOT(display(milxQtRenderWindow*)));
 
+          //display the spine image
           MainWindow->predisplay(spineImage);
-		  spineImage->enableSpline();
-
-
         }
     }
     else
@@ -181,8 +179,8 @@ void milxQtSpinePlugin::loadExtension()
             spineImage->generateImage();
             spineImage->disableInterpolateDisplay();
 
-        QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtModel*)), MainWindow, SLOT(display(milxQtModel*)));
-        QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtRenderWindow*)), MainWindow, SLOT(display(milxQtRenderWindow*)));
+        //QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtSpineImageModel*)), MainWindow, SLOT(display(milxQtImage*)));
+        //QObject::connect(spineImage, SIGNAL(resultAvailable(milxQtRenderWindow*)), MainWindow, SLOT(display(milxQtRenderWindow*)));
 
         MainWindow->display(spineImage);
     }

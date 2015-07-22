@@ -29,33 +29,33 @@ public:
     milxQtSpineImage(QWidget *theParent = 0);
     virtual ~milxQtSpineImage();
 
-	/*!
-	\fn milxQtSpineImage::enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3)
-	\brief Enable spline widget.
-
-	Quiet Boolean is to prevent possible popups to ask user parameters.
-	*/
-	virtual void enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3);
-
 public slots:
-//void diffusionGlyphs(size_t subsampleFactor = 0, size_t resolution = 16);
-  //  void diffusionGlyphs2(size_t subsampleFactor = 0, size_t resolution = 16);
+
+  /*!
+  \fn milxQtSpineImage::enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3)
+  \brief Enable spline widget.
+
+  Quiet Boolean is to prevent possible popups to ask user parameters.
+  */
+  virtual void enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3);
 
 signals:
     /*!
         \fn milxQtSpineImage::resultAvailable(milxQtModel*)
         \brief Send signal that Resultant model is available for showing.
     */
-//    void resultAvailable(milxQtModel*);
+    //void resultAvailable(milxQtSpineImage*);
     /*!
         \fn milxQtSpineImage::resultAvailable(milxQtRenderWindow*)
         \brief Send signal that Resultant rendering is available for showing.
     */
-  //  void resultAvailable(milxQtRenderWindow*);
+    //void resultAvailable(milxQtRenderWindow*);
 
 protected:
-//    QAction *diffusionAct; //!< show diffusion glyphs
-  //  QAction *diffusion2Act; //!< show diffusion glyphs
+    QMenu *spineMenu; //!< Context Menu
+    QAction *splineAct; //!< show spline
+    QAction *saveSplineAct; //!< show spline
+    QAction *openSplineAct; //!< show spline
 
 private:
     void createActions();
