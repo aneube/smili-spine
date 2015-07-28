@@ -38,6 +38,8 @@ public slots:
   Quiet Boolean is to prevent possible popups to ask user parameters.
   */
   virtual void enableSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3);
+  virtual void saveSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3);
+  virtual void openSpline(QString title = "", const bool quiet = false, double minRange = 0.0, double maxRange = 0.0, int noOfLabels = 3);
 
 signals:
     /*!
